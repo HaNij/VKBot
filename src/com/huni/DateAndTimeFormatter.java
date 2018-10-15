@@ -1,17 +1,16 @@
 package com.huni;
 
-import java.util.Calendar;
+import java.util.*;
 import java.text.SimpleDateFormat;
-import java.util.Locale;
 
 /**
  * @author kirill
- * @version 0.1
+ * @version not released alpha 0.1
  *
- * Класс реализует функцию определения даты и времени.
+ * Класс реализует форматирования текущей даты и времени.
  */
 
-public class DateAndTimeManager {
+public class DateAndTimeFormatter {
 
     /**
      * Объект для получения текущего даты и времени
@@ -24,12 +23,19 @@ public class DateAndTimeManager {
     private SimpleDateFormat dateFormat;
 
     /**
-     * Конструктор по умолчанию предназначенный для локализации по умолчанию (русская локализация)
+     * Конструктор по умолчанию, предназначенный для локализации даты и времени (русская локализация по умолчанию)
      */
-    public DateAndTimeManager() {
-//        Локализация для русского формата времени
+    public DateAndTimeFormatter() {
         calendar = Calendar.getInstance(new Locale("ru","RU"));
 
+    }
+
+    /**
+     * Конструктор, предназначенный для определённой локалицазии даты и времени
+     * @param locale - локализация
+     */
+    public DateAndTimeFormatter(Locale locale) {
+        calendar = Calendar.getInstance(locale);
     }
 
     /**
@@ -42,11 +48,21 @@ public class DateAndTimeManager {
     }
 
     /**
-     * Функция используется для определения текущего времени.
+     * Функция используется для определения текущего времени в часах и минутах.
      * @return String текущее время по формату ЧЧ:мм
      */
     public String getTime() {
         dateFormat = new SimpleDateFormat("HH:mm");
+        return dateFormat.format(calendar.getTime());
+    }
+
+    /**
+     * Функция используется для определения текущего времени в часах, минутах и секундах.
+     * @return String текущее время по формату ЧЧ:мм:cc
+     */
+
+    public String getTimeWithSeconds() {
+        dateFormat = new SimpleDateFormat("HH:mm:ss");
         return dateFormat.format(calendar.getTime());
     }
 
@@ -75,5 +91,4 @@ public class DateAndTimeManager {
         dateFormat = new SimpleDateFormat("yyyy.MM.dd");
         return dateFormat.format(calendar.getTime());
     }
-
 }
