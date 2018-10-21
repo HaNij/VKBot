@@ -1,10 +1,13 @@
 package com.huni;
 
+import com.petersamokhin.bots.sdk.clients.Group;
+import com.petersamokhin.bots.sdk.objects.Message;
+
 import java.util.*;
 
 /**
  * @author kirill
- * @version not released alpha 0.1
+ * @version 1.0-SNAPSHOT
  *
  * Основной класс
  */
@@ -16,20 +19,23 @@ public class Main {
 
 //        Бот
         VKBot bot = new VKBot();
-
+        Group group = new Group(0, "token");
+        Message message = new Message();
 //        Задача проверки изменений в расписании
         TimerTask taskCheck = new TimerTask() {
             @Override
             public void run() {
-                System.out.println("Проверяю расписание " + new DateAndTimeFormatter().getTimeWithSeconds());
 //                Код проверки расписания
-                System.out.println("Закончил проверять расписание " + new DateAndTimeFormatter().getTimeWithSeconds());
+                message.from(group);
+                message.to(137406372);
+                message.text("Проверяю расписание " + new DateAndTimeFormatter().getTimeWithSeconds());
+                message.send();
             }
         };
         Timer timerTaskCheck = new Timer();
 
 //        Установка задачи проверки изменений в расписании
-        timerTaskCheck.scheduleAtFixedRate(taskCheck,1000, (60*1000)*5);
+        timerTaskCheck.scheduleAtFixedRate(taskCheck,1000, 1000*5);
 
 //        Задача написания расписание в заданное время
         TimerTask taskPrint = new TimerTask() {
@@ -47,7 +53,7 @@ public class Main {
         calendar.set(Calendar.MINUTE, 10);
         calendar.set(Calendar.SECOND, 0);
 //       Установка написания расписания в заданное время
-        timerTaskPrint.scheduleAtFixedRate(taskPrint, calendar.getTime(), (60*1000)*5);
+//        timerTaskPrint.scheduleAtFixedRate(taskPrint, calendar.getTime(), (60*1000)*5);
     }
 
 }
