@@ -11,7 +11,7 @@ class VKBotTimeTableReaderTest {
 
     @Test
     void readAllRowTimeTable() throws IOException {
-        VKBotTimeTableReader handler = new VKBotTimeTableReader("/home/kirill/IdeaProjects/VKBot/src/main/java/com/huni/rasp1009.xlsx",25);
+        VKBotTimeTableReader handler = new VKBotTimeTableReader("/Users/kirill/Desktop/Study/VKBot/src/main/java/com/huni/rasp1009.xlsx",25);
         ArrayList<String> actual = handler.readAllRowTimeTable(1);
         ArrayList<String> expected = new ArrayList<>();
         expected.add("3 в/н Web-ориентированное программирование (дистанционно), Рогов А.Ю. 304");
@@ -25,7 +25,7 @@ class VKBotTimeTableReaderTest {
 
     @Test
     void test() throws IOException {
-        VKBotTimeTableReader reader = new VKBotTimeTableReader("/home/kirill/IdeaProjects/VKBot/src/main/java/com/huni/rasp1009.xlsx",25);
+        VKBotTimeTableReader reader = new VKBotTimeTableReader("/Users/kirill/Desktop/Study/VKBot/src/main/java/com/huni/rasp1009.xlsx",25);
         Iterator it = reader.readAllRowTimeTable(6).iterator();
         int i = 0;
         while(it.hasNext()) {
