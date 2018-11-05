@@ -5,12 +5,13 @@ import org.apache.poi.ss.usermodel.CellType;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Iterator;
 
 
 /**
  * Класс, который работает с расписанием
  */
-public class VKBotTimeTableHandler extends XLSXReader{
+public class VKBotTimeTableReader extends XLSXReader{
 
     /**
      * Конструктор инициализации.
@@ -18,34 +19,53 @@ public class VKBotTimeTableHandler extends XLSXReader{
      * @param filePath    - инициализация пути
      * @param numberSheet - номер листа, который хотим прочитать
      */
-    public VKBotTimeTableHandler(String filePath, int numberSheet) throws IOException {
+    public VKBotTimeTableReader(String filePath, int numberSheet) throws IOException {
         super(filePath, numberSheet);
     }
 
+    /* Чистые списки
+    * 1) Список с номерами парами по порядку
+    * 2) Список с названиями предметов по порядку
+    * 3) Список с преподавателями по порядку
+    * 4) Список вид дня недели
+    *
+    * Допустим хотим получить расписание на вторник:
+    * for (i = 1; i <= 7; i++) {
+    *   System.out.println(nomer().get(i) + " пара " + den().get(i) + " " + para().get(i) + ", " + prepod().get(i));
+    * }
+    * Какой хотим вывод:
+    * 3 пара н Архитекутра аппаратных средств, Поликарпова С.В 213
+    * 4 пара в/н Организация, принципы построения и функционирования компьютерных сетей, Котова Ю.Г 117
+    * 5 пара в/н Организация, принципы построения и функционирования компьютерных сетей, Котовая Ю.Г 114
+    *
+    * Как это сделать?
+    *   Разбить сырые списки на подсписки.
+    */
+
 
     /**
-     * Получение списка строки одного предмета
-     * @param pair номер пары, которой хотим получить
-     * @param calendar передается по Calendar.DAY_OF_WEEK - текущий или заданный (для тестов) день недели
-     * @return список в виде:
-     * 1) (номер_пары) (тип_недели) (название_пары)
-     * 2) (преподаватель_пары)
+     * Получение "сырого" списка всего столбца дня недели
+     * @param dayWeek день недели
+     * @return "сырой" список со всеми предметами на определённый день недели
      */
-    public ArrayList<String> readRowTimeTable(int pair, Calendar calendar) {
-        return readRowTimeTable(pair,calendar.get(Calendar.DAY_OF_WEEK));
+    public ArrayList<String> readAllRowTimeTable(int dayWeek) {
+        ArrayList<String> allrow = new ArrayList<>();
+        for (int i = 1; i <= 7; i++) {
+            allrow.addAll(readRowTimeTable(i,dayWeek));
+        }
+        return allrow;
     }
 
-
     /**
-     * Получение списка строки одного предмета
+     * Получение "сырого" списка строки одного предмета
      * @param pair номер пары, которой хотим получить
      * @param dayWeek номер дня недели
      * @return список в виде:
      * 1) (номер_пары) (тип_недели) (название_пары)
      * 2) (преподаватель_пары)
      */
-    public ArrayList<String> readRowTimeTable(int pair,int dayWeek) {
-        //        Список, который хранит предмет, в которой находится название предмета и преподаватель предмета
+    private ArrayList<String> readRowTimeTable(int pair,int dayWeek) {
+//        Список, который хранит предмет, в которой находится название предмета и преподаватель предмета
         ArrayList<String> rasp = new ArrayList<>();
 //        Формула нахождения начала столбца в Excel предмета
         int RowStart = (17 + 4*(pair - 1)) - 1;
@@ -96,6 +116,13 @@ public class VKBotTimeTableHandler extends XLSXReader{
                 }
             }
         }
+
+        // перенос преподавателя к названию предмету и прочему в один элемент списка
+        // попарно суммируем элементы и удаляем ненужные, пока список не кончиться
+        for(int i = 0;i < rasp.size(); i++) {
+            rasp.set(i,rasp.get(i) + ", " +rasp.remove(i+1));
+        }
+
         return rasp;
     }
 }
