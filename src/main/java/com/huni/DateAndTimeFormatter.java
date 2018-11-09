@@ -4,9 +4,6 @@ import java.util.*;
 import java.text.SimpleDateFormat;
 
 /**
- * @author kirill
- * @version not released alpha 0.1
- *
  * Класс реализует форматирования текущей даты и времени.
  */
 

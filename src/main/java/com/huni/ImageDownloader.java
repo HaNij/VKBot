@@ -1,13 +1,14 @@
 package com.huni;
 
 import java.io.InputStream;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.sql.SQLOutput;
 
+/**
+ * Класс реализует загрузку изображений из Интернета
+ */
 public class ImageDownloader {
 
     /**
@@ -45,8 +46,8 @@ public class ImageDownloader {
         try(InputStream in = new URL(url).openStream()){
             try {
                 Files.copy(in, Paths.get(path));
+                // Если был словлена ошибка, что данный файл существует, то текущий файл удаляется и заменяется на новый
             } catch (FileAlreadyExistsException e) {
-// Если был словлена ошибка, что данный файл существует, то текущий файл удаляется и заменяется на новый
                 Files.delete(Paths.get(path));
                 System.out.println("file already exist, so it deleted and repasted");
                 Files.copy(in, Paths.get(path));

@@ -8,9 +8,12 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class XLSXReaderTest {
 
+    private String filePath = "/home/kirill/IdeaProjects/VKBot/src/test/java/com/huni/Test.xlsx";
+    private String macFilePath = "/Users/kirill/Desktop/Study/VKBot/src/test/java/com/huni/Test.xlsx";
+
     @Test
     void test() throws IOException {
-        XLSXReader reader = new XLSXReader("/Users/kirill/Desktop/Study/VKBot/src/test/java/com/huni/Test.xlsx",0);
+        XLSXReader reader = new XLSXReader(filePath,0);
         String actual1 = reader.getStringCell(0,0);
         String expected1 = "Test";
         double actual2 = reader.getNumericCell(1,0);

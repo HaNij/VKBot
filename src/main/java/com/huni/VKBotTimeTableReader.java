@@ -4,8 +4,6 @@ import org.apache.poi.ss.usermodel.CellType;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Iterator;
 
 
 /**
@@ -22,26 +20,6 @@ public class VKBotTimeTableReader extends XLSXReader{
     public VKBotTimeTableReader(String filePath, int numberSheet) throws IOException {
         super(filePath, numberSheet);
     }
-
-    /* Чистые списки
-    * 1) Список с номерами парами по порядку
-    * 2) Список с названиями предметов по порядку
-    * 3) Список с преподавателями по порядку
-    * 4) Список вид дня недели
-    *
-    * Допустим хотим получить расписание на вторник:
-    * for (i = 1; i <= 7; i++) {
-    *   System.out.println(nomer().get(i) + " пара " + den().get(i) + " " + para().get(i) + ", " + prepod().get(i));
-    * }
-    * Какой хотим вывод:
-    * 3 пара н Архитекутра аппаратных средств, Поликарпова С.В 213
-    * 4 пара в/н Организация, принципы построения и функционирования компьютерных сетей, Котова Ю.Г 117
-    * 5 пара в/н Организация, принципы построения и функционирования компьютерных сетей, Котовая Ю.Г 114
-    *
-    * Как это сделать?
-    *   Разбить сырые списки на подсписки.
-    */
-
 
     /**
      * Получение "сырого" списка всего столбца дня недели
@@ -61,8 +39,7 @@ public class VKBotTimeTableReader extends XLSXReader{
      * @param pair номер пары, которой хотим получить
      * @param dayWeek номер дня недели
      * @return список в виде:
-     * 1) (номер_пары) (тип_недели) (название_пары)
-     * 2) (преподаватель_пары)
+     * (номер_пары) (тип_недели) (название_пары), (преподаватель_предмета)
      */
     private ArrayList<String> readRowTimeTable(int pair,int dayWeek) {
 //        Список, который хранит предмет, в которой находится название предмета и преподаватель предмета

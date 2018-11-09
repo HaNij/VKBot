@@ -9,9 +9,12 @@ import static org.junit.jupiter.api.Assertions.*;
 
 class VKBotTimeTableReaderTest {
 
+    private String filePath = "/home/kirill/IdeaProjects/VKBot/src/main/java/com/huni/rasp1009.xlsx";
+    private String macFilePath = "/Users/kirill/Desktop/Study/VKBot/src/main/java/com/huni/rasp1009.xlsx";
+
     @Test
     void readAllRowTimeTable() throws IOException {
-        VKBotTimeTableReader handler = new VKBotTimeTableReader("/Users/kirill/Desktop/Study/VKBot/src/main/java/com/huni/rasp1009.xlsx",25);
+        VKBotTimeTableReader handler = new VKBotTimeTableReader(filePath,25);
         ArrayList<String> actual = handler.readAllRowTimeTable(1);
         ArrayList<String> expected = new ArrayList<>();
         expected.add("3 в/н Web-ориентированное программирование (дистанционно), Рогов А.Ю. 304");
@@ -21,16 +24,5 @@ class VKBotTimeTableReaderTest {
 
         assertEquals(expected,actual);
 
-    }
-
-    @Test
-    void test() throws IOException {
-        VKBotTimeTableReader reader = new VKBotTimeTableReader("/Users/kirill/Desktop/Study/VKBot/src/main/java/com/huni/rasp1009.xlsx",25);
-        Iterator it = reader.readAllRowTimeTable(6).iterator();
-        int i = 0;
-        while(it.hasNext()) {
-            System.out.println("[" + i + "]" + it.next());
-            i++;
-        }
     }
 }

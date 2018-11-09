@@ -1,15 +1,11 @@
 package com.huni;
 
-import org.apache.poi.ss.usermodel.*;
-import org.apache.poi.xssf.usermodel.XSSFCell;
-import org.apache.poi.xssf.usermodel.XSSFRow;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 
 
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 
 
@@ -96,8 +92,6 @@ public class XLSXReader {
     public boolean getBooleanCell(int row, int cell) {
         return sheet.getRow(row).getCell(cell).getBooleanCellValue();
     }
-
-
 
     /**
      * Геттер для XSSFWorkbook

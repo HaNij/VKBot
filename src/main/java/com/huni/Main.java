@@ -3,57 +3,47 @@ package com.huni;
 import com.petersamokhin.bots.sdk.clients.Group;
 import com.petersamokhin.bots.sdk.objects.Message;
 
+import java.io.IOException;
+import java.nio.file.Paths;
 import java.util.*;
 
 /**
  * @author kirill
- * @version 1.0-SNAPSHOT
+ * @version 1.0
  *
  * Основной класс
  */
 
 public class Main {
-    public static void main(String[] args) {
-//        (60*60*1000) - = 1ч, т.е каждый час, проверять расписание
+    public static void main(String[] args) throws IOException {
 //        (60*60*1000)*24 = 1ч * 24 = 24ч, т.е каждый день раз в день писать расписание.
 
-//        Бот
-        VKBot bot = new VKBot();
         Group group = new Group(0, "token");
         Message message = new Message();
-//        Задача проверки изменений в расписании
-        TimerTask taskCheck = new TimerTask() {
-            @Override
-            public void run() {
-//                Код проверки расписания
-                message.from(group);
-                message.to(137406372);
-                message.text("Проверяю расписание " + new DateAndTimeFormatter().getTimeWithSeconds());
-                message.send();
-            }
-        };
-        Timer timerTaskCheck = new Timer();
-
-//        Установка задачи проверки изменений в расписании
-        timerTaskCheck.scheduleAtFixedRate(taskCheck,1000, 1000*5);
-
-//        Задача написания расписание в заданное время
+        // Paths.get... - нужен для определения абсолютного пути jar файла, используется для удалённых компьютеров
+        VKBotTimeTableReader timeTableReader = new VKBotTimeTableReader(Paths.get(".").toAbsolutePath().normalize().toString() + "/rasp.xlsx",25);
+//      Задача написания расписание в заданное время
         TimerTask taskPrint = new TimerTask() {
             @Override
             public void run() {
-                System.out.println("Пишу расписание " + new DateAndTimeFormatter().getTimeWithSeconds());
-//                Код для написания расписания
-                System.out.println("Закончил писать расписание " + new DateAndTimeFormatter().getTimeWithSeconds());
+                message.from(group);
+                message.to(137406372);
+                message.text(new Date()).send();
+//                Calendar.DAY_OF_WEEK - 1, т.к первым днём недели является воскресенье (так прописано в реализации Calendar), а в России понедельник.
+                Iterator it = timeTableReader.readAllRowTimeTable(Calendar.getInstance().get(Calendar.DAY_OF_WEEK)-1).iterator();
+                while(it.hasNext()) {
+                    message.text(it.next()).send();
+                }
             }
         };
         Timer timerTaskPrint = new Timer();
 //        Установка времени написания расписания
         Calendar calendar = Calendar.getInstance(new Locale("ru","RU"));
-        calendar.set(Calendar.HOUR_OF_DAY, 10);
-        calendar.set(Calendar.MINUTE, 10);
+        calendar.set(Calendar.HOUR_OF_DAY, 7);
+        calendar.set(Calendar.MINUTE, 0);
         calendar.set(Calendar.SECOND, 0);
 //       Установка написания расписания в заданное время
-//        timerTaskPrint.scheduleAtFixedRate(taskPrint, calendar.getTime(), (60*1000)*5);
+        timerTaskPrint.scheduleAtFixedRate(taskPrint, calendar.getTime(), (60*60*1000)*24);
     }
 
 }
