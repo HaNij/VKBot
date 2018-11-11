@@ -82,10 +82,18 @@ public class DateAndTimeFormatter {
 
     /**
      * Функция используется для определения текущей даты.
-     * @return String текущая дата в формате гггг:ММ:дд
+     * @return String текущая дата в формате день.месяц.год
      */
     public String getDate() {
-        dateFormat = new SimpleDateFormat("yyyy.MM.dd");
+        dateFormat = new SimpleDateFormat("dd.MM.yyyy");
         return dateFormat.format(calendar.getTime());
+    }
+
+    /**
+     * Установка calendar
+     * @param calendar объект calendar
+     */
+    public void setDate(Calendar calendar) {
+        this.calendar = calendar;
     }
 }
