@@ -52,7 +52,7 @@ public class Main {
                 message.to(137406372);
 //                Проверка на воскресенье
                 if ((Calendar.getInstance().get(Calendar.DAY_OF_WEEK)-1) != 0) {
-                    message.text(greetingFormatter(formatter.getDayTime()) + ", сегодня " + formatter.getDate() + formatter.getTime() + ", текущее расписание:").send();
+                    message.text(greetingFormatter(formatter.getDayTime()) + ", сегодня " + formatter.getDate() + " " + formatter.getTime() + ", текущее расписание:").send();
 //                Calendar.DAY_OF_WEEK - 1, т.к первым днём недели является воскресенье (так прописано в реализации Calendar), а в России понедельник.
                     Iterator it = timeTableReader.readAllRowTimeTable(Calendar.getInstance().get(Calendar.DAY_OF_WEEK)-1).iterator();
                     while(it.hasNext()) {
